@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const token = require('crypto-token');
 const readTalkerFile = require('./utils/readFiles');
 
 const app = express();
@@ -42,4 +43,13 @@ app.get('/talker/:id', verify, async (req, res) => {
     const { id } = req.params;
     const pegandoId = talker.find((element) => element.id === Number(id));
     return res.status(200).json(pegandoId);
+});
+
+/* -----------  /login ------------- */
+
+app.post('/login', async (request, response) => {
+    const { email, password } = request.body;
+    console.log(email, password);
+    console.log(token(16));
+    return response.status(200).json({ token: token(16) });   
 });

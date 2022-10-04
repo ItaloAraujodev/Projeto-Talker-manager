@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const pessoas = require('./talker.json');
-const readTalkerFile = require('./utils/readFiles')
+const readTalkerFile = require('./utils/readFiles');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,9 +13,9 @@ const verify = async (req, res, next) => {
   const { id } = req.params;
   const pegandoId = talker.some((element) => element.id === Number(id));
 
-  if(!pegandoId){
+  if (!pegandoId) {
     return res.status(404).json({
-      "message": "Pessoa palestrante não encontrada"
+      message: 'Pessoa palestrante não encontrada',
     });
   }
   next();
@@ -33,14 +32,14 @@ app.listen(PORT, () => {
 
 /* -----------  INICIANDO ------------- */
 
-app.get('/talker',  async (_request, response) => {
+app.get('/talker', async (_request, response) => {
   const talker = await readTalkerFile();
   return response.status(200).json(talker);
 });
 
-app.get('/talker/:id', verify,  async (req, res) => {
+app.get('/talker/:id', verify, async (req, res) => {
     const talker = await readTalkerFile();
     const { id } = req.params;
-    const pegandoId = talker.find(({id}) => id === Number(id));
-    return res.status(200).json(pegandoId)
+    const pegandoId = talker.find((element) => element.id === Number(id));
+    return res.status(200).json(pegandoId);
 });

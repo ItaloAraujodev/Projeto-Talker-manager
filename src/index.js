@@ -40,6 +40,22 @@ app.listen(PORT, () => {
 
 /* -----------  INICIANDO ------------- */
 
+app.get('/talker/search', validToken, async (req, res) => {
+  const talker = await readTalkerFile();
+  const query = req.query.q;
+  const name = talker.filter((element) => element.name.includes(query));
+  
+  if (!query) {
+    return res.status(200).json(talker);
+  }
+
+  if (!name) {
+    return res.status(200).json([]);
+  }
+
+  return res.status(200).json(name);
+});
+
 app.get('/talker', async (_request, response) => {
   const talker = await readTalkerFile();
   return response.status(200).json(talker);

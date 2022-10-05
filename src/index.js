@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const token = require('crypto-token');
-const { application } = require('express');
 const readTalkerFile = require('./utils/readFiles');
 const writeTalkerFile = require('./utils/writeTalkerFile');
 const { validEmail, validPassword } = require('./middleware/validCampos');

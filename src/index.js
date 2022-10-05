@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const token = require('crypto-token');
 const readTalkerFile = require('./utils/readFiles');
+const { validEmail, validPassword } = require('./middleware/validCampos');
 
 const app = express();
 app.use(bodyParser.json());
@@ -47,7 +48,7 @@ app.get('/talker/:id', verify, async (req, res) => {
 
 /* -----------  /login ------------- */
 
-app.post('/login', async (request, response) => {
+app.post('/login', validEmail, validPassword, async (request, response) => {
     const { email, password } = request.body;
     console.log(email, password);
     console.log(token(16));

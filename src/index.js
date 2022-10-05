@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const token = require('crypto-token');
+const { application } = require('express');
 const readTalkerFile = require('./utils/readFiles');
 const writeTalkerFile = require('./utils/writeTalkerFile');
 const { validEmail, validPassword } = require('./middleware/validCampos');
@@ -78,6 +79,14 @@ validAge, validTalk, validTalkWatchedAt, validTalkRate, async (req, res) => {
   await writeTalkerFile([...pegando, result]);
 
   return res.status(200).json(result);
+});
+
+app.delete('/talker/:id', validToken, async (req, res) => {
+  const { id } = req.params;
+  const talker = await readTalkerFile();
+  const remover = talker.filter((element) => element.id !== Number(id));
+  await writeTalkerFile([...remover]);
+  return res.status(204).json(remover);
 });
 
 /* -----------  /login ------------- */

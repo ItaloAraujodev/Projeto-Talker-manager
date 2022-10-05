@@ -51,10 +51,6 @@ const validTalk = (req, res, next) => {
     if (!talk) {
         return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
     }
-    
-    if (!talk.rate) {
-        return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
-    }
 
     next();
 };
@@ -72,20 +68,26 @@ const validTalkWatchedAt = (req, res, next) => {
 
     next();
 };
+// ( Number.isInteger(talk.rate) && ( x > 0 || x < 6) )
 
 const validTalkRate = (req, res, next) => {
     const { talk } = req.body;
-    console.log(talk);
-    
-    if (!talk.rate) {
-        return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
-    }
 
     if (talk.rate < 1 || talk.rate > 5) {
         return res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
     }
 
+    if (!talk.rate) {
+        return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+    }
+
     next();
 };
 
-module.exports = { validToken, validName, validAge, validTalk, validTalkWatchedAt, validTalkRate };
+module.exports = { 
+    validToken, 
+    validName, 
+    validAge, 
+    validTalk, 
+    validTalkWatchedAt, 
+    validTalkRate };

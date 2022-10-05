@@ -53,7 +53,9 @@ app.get('/talker/:id', verify, async (req, res) => {
 });
 
 app.post('/talker', 
-validToken, validName, validAge, validTalk, validTalkWatchedAt, validTalkRate, async (req, res) => {
+validToken, 
+validName, 
+validAge, validTalk, validTalkWatchedAt, validTalkRate, async (req, res) => {
   const talker = await readTalkerFile();
   const { name, age, talk } = req.body;
   const id = talker.length + 1;
@@ -62,6 +64,20 @@ validToken, validName, validAge, validTalk, validTalkWatchedAt, validTalkRate, a
   console.log(dados);
   await writeTalkerFile([...talker, dados]);
   return res.status(201).json(dados);
+});
+
+app.put('/talker/:id', validToken, validName, 
+validAge, validTalk, validTalkWatchedAt, validTalkRate, async (req, res) => {
+  const talker = await readTalkerFile();
+  const { id } = req.params;
+  console.log(id);
+  const { name, age, talk } = req.body;
+  const pegando = talker.filter((element) => element.id !== Number(id));
+  const result = { id: Number(id), name, age, talk };
+
+  await writeTalkerFile([...pegando, result]);
+
+  return res.status(200).json(result);
 });
 
 /* -----------  /login ------------- */
